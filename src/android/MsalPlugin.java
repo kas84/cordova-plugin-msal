@@ -552,15 +552,19 @@ public class MsalPlugin extends CordovaPlugin {
 
     private JSONArray processClaims(Map<String, ?> claims) {
         JSONArray claimsArr = new JSONArray();
-        for (Map.Entry<String, ?> claim : claims.entrySet()) {
-            try {
-                JSONObject claimObj = new JSONObject();
-                claimObj.put("key", claim.getKey());
-                claimObj.put("value", claim.getValue());
-                claimsArr.put(claimObj);
-            } catch (JSONException e) {
-                MsalPlugin.this.callbackContext.error(e.getMessage());
+        try{
+            for (Map.Entry<String, ?> claim : claims.entrySet()) {
+                try {
+                    JSONObject claimObj = new JSONObject();
+                    claimObj.put("key", claim.getKey());
+                    claimObj.put("value", claim.getValue());
+                    claimsArr.put(claimObj);
+                } catch (JSONException e) {
+                    MsalPlugin.this.callbackContext.error(e.getMessage());
+                }
             }
+        } catch (NullPointerException ex) {
+            MsalPlugin.this.callbackContext.error(ex.getMessage());
         }
         return claimsArr;
     }
