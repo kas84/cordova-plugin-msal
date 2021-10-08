@@ -11,5 +11,5 @@ repositories {
     }
 }
 dependencies {
-    implementation 'com.microsoft.identity.client:msal:2.0.+'
+    implementation 'com.microsoft.identity.client:msal:2.2.+'
 }
