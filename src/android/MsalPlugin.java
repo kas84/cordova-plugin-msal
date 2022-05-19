@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 
 import com.microsoft.identity.client.AcquireTokenParameters;
 import com.microsoft.identity.client.AuthenticationCallback;
@@ -139,12 +141,12 @@ public class MsalPlugin extends CordovaPlugin {
                             prompt = Prompt.WHEN_REQUIRED;
                     }
                 }
-                List<Pair<String, String>> authorizationQueryStringParameters = new ArrayList<Pair<String, String>>();
+                List<Map.Entry<String, String>> authorizationQueryStringParameters = new ArrayList<Map.Entry<String, String>>();
                 if (args.length() > 2) {
                     JSONArray queryParams = args.getJSONArray(2);
                     for (int i = 0; i < queryParams.length(); ++i) {
                         JSONObject queryParam = queryParams.getJSONObject(i);
-                        authorizationQueryStringParameters.add(new Pair<String, String>(
+                        authorizationQueryStringParameters.add(new AbstractMap.SimpleEntry(
                                 queryParam.getString("param"),
                                 queryParam.getString("value")
                         ));
@@ -364,7 +366,7 @@ public class MsalPlugin extends CordovaPlugin {
         }
     }
 
-    private void signinUserInteractive(final String loginHint, final List<Pair<String, String>> authorizationQueryStringParameters, final Prompt prompt, final String[] otherScopesToAuthorize) {
+    private void signinUserInteractive(final String loginHint, final List<Map.Entry<String, String>> authorizationQueryStringParameters, final Prompt prompt, final String[] otherScopesToAuthorize) {
         if (this.checkConfigInit()) {
             if (this.SINGLE_ACCOUNT.equals(this.accountMode)) {
                 cordova.getThreadPool().execute(new Runnable() {
